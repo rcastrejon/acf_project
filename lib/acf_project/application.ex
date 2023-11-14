@@ -11,7 +11,7 @@ defmodule AcfProject.Application do
       # Start the Telemetry supervisor
       AcfProjectWeb.Telemetry,
       # Start the Ecto repository
-      AcfProject.Repo,
+      # AcfProject.Repo,
       # Start the PubSub system
       {Phoenix.PubSub, name: AcfProject.PubSub},
       # Start the Endpoint (http/https)
@@ -23,6 +23,7 @@ defmodule AcfProject.Application do
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: AcfProject.Supervisor]
+    :ets.new(AcfProject.SICEI.Alumno, [:set, :public, :named_table])
     Supervisor.start_link(children, opts)
   end
 

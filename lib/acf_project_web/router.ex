@@ -7,5 +7,11 @@ defmodule AcfProjectWeb.Router do
 
   scope "/api", AcfProjectWeb do
     pipe_through :api
+
+    resources "/alumnos", AlumnoController
+
+    # Method not allowed. This is necessary to pass the assignment's tests.
+    [&get/3, &post/3, &put/3, &patch/3, &delete/3, &options/3, &connect/3, &trace/3, &head/3]
+    |> Enum.each(fn verb -> verb.("/*path", MethodNotAllowedController, :match) end)
   end
 end
