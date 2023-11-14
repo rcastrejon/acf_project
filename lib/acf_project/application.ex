@@ -24,6 +24,7 @@ defmodule AcfProject.Application do
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: AcfProject.Supervisor]
     :ets.new(AcfProject.SICEI.Alumno, [:set, :public, :named_table])
+    :ets.new(AcfProject.SICEI.Profesor, [:set, :public, :named_table])
     Supervisor.start_link(children, opts)
   end
 

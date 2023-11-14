@@ -101,4 +101,100 @@ defmodule AcfProject.SICEI do
   def change_alumno(%Alumno{} = alumno, attrs \\ %{}) do
     Alumno.changeset(alumno, attrs)
   end
+
+  alias AcfProject.SICEI.Profesor
+
+  @doc """
+  Returns the list of profesores.
+
+  ## Examples
+
+      iex> list_profesores()
+      [%Profesor{}, ...]
+
+  """
+  def list_profesores do
+    Repo.all(Profesor)
+  end
+
+  @doc """
+  Gets a single profesor.
+
+  Raises `Ecto.NoResultsError` if the Profesor does not exist.
+
+  ## Examples
+
+      iex> get_profesor!(123)
+      %Profesor{}
+
+      iex> get_profesor!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_profesor!(id), do: Repo.get!(Profesor, id)
+
+  @doc """
+  Creates a profesor.
+
+  ## Examples
+
+      iex> create_profesor(%{field: value})
+      {:ok, %Profesor{}}
+
+      iex> create_profesor(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_profesor(attrs \\ %{}) do
+    %Profesor{}
+    |> Profesor.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a profesor.
+
+  ## Examples
+
+      iex> update_profesor(profesor, %{field: new_value})
+      {:ok, %Profesor{}}
+
+      iex> update_profesor(profesor, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_profesor(%Profesor{} = profesor, attrs) do
+    profesor
+    |> Profesor.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a profesor.
+
+  ## Examples
+
+      iex> delete_profesor(profesor)
+      {:ok, %Profesor{}}
+
+      iex> delete_profesor(profesor)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_profesor(%Profesor{} = profesor) do
+    Repo.delete(profesor)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking profesor changes.
+
+  ## Examples
+
+      iex> change_profesor(profesor)
+      %Ecto.Changeset{data: %Profesor{}}
+
+  """
+  def change_profesor(%Profesor{} = profesor, attrs \\ %{}) do
+    Profesor.changeset(profesor, attrs)
+  end
 end

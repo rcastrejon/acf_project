@@ -62,4 +62,64 @@ defmodule AcfProject.SICEITest do
       assert %Ecto.Changeset{} = SICEI.change_alumno(alumno)
     end
   end
+
+  describe "profesores" do
+    alias AcfProject.SICEI.Profesor
+
+    import AcfProject.SICEIFixtures
+
+    @invalid_attrs %{numeroEmpleado: nil, nombres: nil, apellidos: nil, horasClase: nil}
+
+    test "list_profesores/0 returns all profesores" do
+      profesor = profesor_fixture()
+      assert SICEI.list_profesores() == [profesor]
+    end
+
+    test "get_profesor!/1 returns the profesor with given id" do
+      profesor = profesor_fixture()
+      assert SICEI.get_profesor!(profesor.id) == profesor
+    end
+
+    test "create_profesor/1 with valid data creates a profesor" do
+      valid_attrs = %{numeroEmpleado: 42, nombres: "some nombres", apellidos: "some apellidos", horasClase: 42}
+
+      assert {:ok, %Profesor{} = profesor} = SICEI.create_profesor(valid_attrs)
+      assert profesor.numeroEmpleado == 42
+      assert profesor.nombres == "some nombres"
+      assert profesor.apellidos == "some apellidos"
+      assert profesor.horasClase == 42
+    end
+
+    test "create_profesor/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = SICEI.create_profesor(@invalid_attrs)
+    end
+
+    test "update_profesor/2 with valid data updates the profesor" do
+      profesor = profesor_fixture()
+      update_attrs = %{numeroEmpleado: 43, nombres: "some updated nombres", apellidos: "some updated apellidos", horasClase: 43}
+
+      assert {:ok, %Profesor{} = profesor} = SICEI.update_profesor(profesor, update_attrs)
+      assert profesor.numeroEmpleado == 43
+      assert profesor.nombres == "some updated nombres"
+      assert profesor.apellidos == "some updated apellidos"
+      assert profesor.horasClase == 43
+    end
+
+    test "update_profesor/2 with invalid data returns error changeset" do
+      profesor = profesor_fixture()
+      assert {:error, %Ecto.Changeset{}} = SICEI.update_profesor(profesor, @invalid_attrs)
+      assert profesor == SICEI.get_profesor!(profesor.id)
+    end
+
+    test "delete_profesor/1 deletes the profesor" do
+      profesor = profesor_fixture()
+      assert {:ok, %Profesor{}} = SICEI.delete_profesor(profesor)
+      assert_raise Ecto.NoResultsError, fn -> SICEI.get_profesor!(profesor.id) end
+    end
+
+    test "change_profesor/1 returns a profesor changeset" do
+      profesor = profesor_fixture()
+      assert %Ecto.Changeset{} = SICEI.change_profesor(profesor)
+    end
+  end
 end

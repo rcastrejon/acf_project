@@ -20,4 +20,21 @@ defmodule AcfProject.SICEIFixtures do
 
     alumno
   end
+
+  @doc """
+  Generate a profesor.
+  """
+  def profesor_fixture(attrs \\ %{}) do
+    {:ok, profesor} =
+      attrs
+      |> Enum.into(%{
+        apellidos: "some apellidos",
+        horasClase: 42,
+        nombres: "some nombres",
+        numeroEmpleado: 42
+      })
+      |> AcfProject.SICEI.create_profesor()
+
+    profesor
+  end
 end
