@@ -7,8 +7,8 @@
 # General application configuration
 import Config
 
-# config :acf_project,
-#   ecto_repos: [AcfProject.Repo]
+config :acf_project,
+  ecto_repos: [AcfProject.Repo]
 
 # Configures the endpoint
 config :acf_project, AcfProjectWeb.Endpoint,

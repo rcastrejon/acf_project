@@ -13,9 +13,8 @@ defmodule AcfProject.SICEI.Alumno do
 
   @doc false
   def changeset(alumno, attrs) do
-    # id only necessary in-memory repo
     alumno
-    |> cast(attrs, [:id, :nombres, :apellidos, :matricula, :promedio])
-    |> validate_required([:id, :nombres, :apellidos, :matricula, :promedio])
+    |> cast(attrs, [:nombres, :apellidos, :matricula, :promedio])
+    |> validate_required([:nombres, :apellidos, :matricula, :promedio])
   end
 end

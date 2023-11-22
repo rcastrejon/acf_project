@@ -13,9 +13,8 @@ defmodule AcfProject.SICEI.Profesor do
 
   @doc false
   def changeset(profesor, attrs) do
-    # id only necessary in-memory repo
     profesor
-    |> cast(attrs, [:id, :numeroEmpleado, :nombres, :apellidos, :horasClase])
-    |> validate_required([:id, :numeroEmpleado, :nombres, :apellidos, :horasClase])
+    |> cast(attrs, [:numeroEmpleado, :nombres, :apellidos, :horasClase])
+    |> validate_required([:numeroEmpleado, :nombres, :apellidos, :horasClase])
   end
 end
