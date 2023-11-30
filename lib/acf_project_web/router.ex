@@ -9,6 +9,8 @@ defmodule AcfProjectWeb.Router do
     pipe_through :api
 
     resources "/alumnos", AlumnoController
+    post "/alumnos/:id/fotoPerfil", AlumnoController, :upload_profile_picture
+
     resources "/profesores", ProfesorController
 
     # Method not allowed. This is necessary to pass the assignment's tests.

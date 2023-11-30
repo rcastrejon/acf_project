@@ -21,7 +21,8 @@ defmodule AcfProjectWeb.AlumnoJSON do
       nombres: alumno.nombres,
       apellidos: alumno.apellidos,
       matricula: alumno.matricula,
-      promedio: alumno.promedio
+      promedio: alumno.promedio,
+      fotoPerfilUrl: alumno.foto_perfil_url
     }
   end
 end

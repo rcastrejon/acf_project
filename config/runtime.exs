@@ -95,3 +95,25 @@ if config_env() == :prod do
   #
   # Check `Plug.SSL` for all available options in `force_ssl`.
 end
+
+# Setup AWS
+aws_region =
+  System.get_env("AWS_REGION") ||
+    raise """
+    environment variable AWS_REGION is missing.
+    For example: us-west-2
+    """
+
+config :ex_aws,
+  region: aws_region,
+  access_key_id: {:system, "AWS_ACCESS_KEY_ID"},
+  security_token: {:system, "AWS_SESSION_TOKEN"},
+  secret_access_key: {:system, "AWS_SECRET_ACCESS_KEY"}
+
+config :waffle,
+  storage: Waffle.Storage.S3,
+  # or {:system, "AWS_S3_BUCKET"}
+  bucket: "uady-acf-project",
+  # or {:system, "ASSET_HOST"}
+  # asset_host: "https://uady-acf-project.s3.amazonaws.com"
+  virtual_host: true

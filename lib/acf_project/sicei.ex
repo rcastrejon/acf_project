@@ -74,6 +74,24 @@ defmodule AcfProject.SICEI do
   end
 
   @doc """
+  Updates a alumno's profile picture URL.
+
+  ## Examples
+
+      iex> update_alumno_profile_picture_url(alumno, "https://example.com/profile_picture.jpg")
+      {:ok, %Alumno{}}
+
+      iex> update_alumno_profile_picture_url(invalid_alumno, "https://example.com/profile_picture.jpg")
+      {:error, %Ecto.Changeset{}}
+  """
+  def update_alumno_profile_picture_url(%Alumno{} = alumno, profile_picture_url)
+      when is_binary(profile_picture_url) do
+    alumno
+    |> Alumno.change_profile_picture_url(profile_picture_url)
+    |> Repo.update()
+  end
+
+  @doc """
   Deletes a alumno.
 
   ## Examples

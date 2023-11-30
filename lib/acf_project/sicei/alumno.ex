@@ -8,6 +8,8 @@ defmodule AcfProject.SICEI.Alumno do
     field :matricula, :string
     field :promedio, :float
 
+    field :foto_perfil_url, :string
+
     timestamps()
   end
 
@@ -16,5 +18,12 @@ defmodule AcfProject.SICEI.Alumno do
     alumno
     |> cast(attrs, [:nombres, :apellidos, :matricula, :promedio])
     |> validate_required([:nombres, :apellidos, :matricula, :promedio])
+  end
+
+  def change_profile_picture_url(alumno, profile_picture_url)
+      when is_binary(profile_picture_url) do
+    alumno
+    |> change(foto_perfil_url: profile_picture_url)
+    |> validate_required([:foto_perfil_url])
   end
 end
