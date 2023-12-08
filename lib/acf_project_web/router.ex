@@ -9,7 +9,12 @@ defmodule AcfProjectWeb.Router do
     pipe_through :api
 
     resources "/alumnos", AlumnoController
+    post "/alumnos/:id/email", AlumnoController, :send_email
     post "/alumnos/:id/fotoPerfil", AlumnoController, :upload_profile_picture
+
+    post "/alumnos/:alumno_id/session/login", SessionController, :create
+    post "/alumnos/:alumno_id/session/verify", SessionController, :show
+    post "/alumnos/:alumno_id/session/logout", SessionController, :delete
 
     resources "/profesores", ProfesorController
 

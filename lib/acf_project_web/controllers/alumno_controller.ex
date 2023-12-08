@@ -51,4 +51,15 @@ defmodule AcfProjectWeb.AlumnoController do
       render(conn, :show, alumno: alumno)
     end
   end
+
+  def send_email(conn, %{"id" => id}) do
+    alumno = SICEI.get_alumno!(id)
+
+    AcfProject.Notifier.publish_message(
+      "Alumno: #{alumno.nombres} #{alumno.apellidos}\nCalificación: #{alumno.promedio}"
+    )
+    |> IO.inspect()
+
+    render(conn, :show, alumno: alumno)
+  end
 end

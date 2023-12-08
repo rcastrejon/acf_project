@@ -42,6 +42,8 @@ defmodule AcfProject.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:ex_aws, "~> 2.1"},
       {:ex_aws_s3, "~> 2.0"},
+      {:ex_aws_dynamo, "~> 4.0"},
+      {:ex_aws_sns, "~> 2.0"},
       {:hackney, "~> 1.9"},
       {:sweet_xml, "~> 0.6"},
       {:waffle, "~> 1.1"}
