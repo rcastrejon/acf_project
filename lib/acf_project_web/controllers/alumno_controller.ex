@@ -1,6 +1,7 @@
 defmodule AcfProjectWeb.AlumnoController do
   use AcfProjectWeb, :controller
 
+  alias AcfProject.ProfilePicture
   alias AcfProject.SICEI
   alias AcfProject.SICEI.Alumno
 
@@ -39,5 +40,26 @@ defmodule AcfProjectWeb.AlumnoController do
     with {:ok, %Alumno{}} <- SICEI.delete_alumno(alumno) do
       send_resp(conn, :ok, "")
     end
+  end
+
+  def upload_profile_picture(conn, %{"id" => id, "foto" => profile_picture}) do
+    alumno = SICEI.get_alumno!(id)
+
+    with {:ok, filename} <- ProfilePicture.store({profile_picture, alumno}),
+         url <- ProfilePicture.url({filename, alumno}),
+         {:ok, %Alumno{} = alumno} <- SICEI.update_alumno_profile_picture_url(alumno, url) do
+      render(conn, :show, alumno: alumno)
+    end
+  end
+
+  def send_email(conn, %{"id" => id}) do
+    alumno = SICEI.get_alumno!(id)
+
+    AcfProject.Notifier.publish_message(
+      "Alumno: #{alumno.nombres} #{alumno.apellidos}\nCalificación: #{alumno.promedio}"
+    )
+    |> IO.inspect()
+
+    render(conn, :show, alumno: alumno)
   end
 end

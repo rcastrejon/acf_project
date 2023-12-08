@@ -4,9 +4,11 @@ defmodule AcfProject.SICEI do
   """
 
   import Ecto.Query, warn: false
+  alias AcfProject.Sicei.Session
   alias AcfProject.Repo
 
   alias AcfProject.SICEI.Alumno
+  @session_table "sesiones-alumnos"
 
   @doc """
   Returns the list of alumnos.
@@ -71,6 +73,59 @@ defmodule AcfProject.SICEI do
     alumno
     |> Alumno.changeset(attrs)
     |> Repo.update()
+  end
+
+  @doc """
+  Updates a alumno's profile picture URL.
+
+  ## Examples
+
+      iex> update_alumno_profile_picture_url(alumno, "https://example.com/profile_picture.jpg")
+      {:ok, %Alumno{}}
+
+      iex> update_alumno_profile_picture_url(invalid_alumno, "https://example.com/profile_picture.jpg")
+      {:error, %Ecto.Changeset{}}
+  """
+  def update_alumno_profile_picture_url(%Alumno{} = alumno, profile_picture_url)
+      when is_binary(profile_picture_url) do
+    alumno
+    |> Alumno.change_profile_picture_url(profile_picture_url)
+    |> Repo.update()
+  end
+
+  def get_alumno_by_id_and_password(id, password) when is_binary(id) and is_binary(password) do
+    alumno = Repo.get_by!(Alumno, id: id)
+    if Alumno.valid_password?(alumno, password), do: alumno
+  end
+
+  def generate_alumno_session(alumno) do
+    session = Alumno.build_session(alumno)
+
+    case ExAws.Dynamo.put_item(@session_table, session)
+         |> ExAws.request() do
+      {:ok, _} -> {:ok, session}
+      {:error, _} -> {:error, :s3_error}
+    end
+  end
+
+  def verify_alumno_session(session_string) when is_binary(session_string) do
+    with {:ok, %{"Item" => _} = response} <-
+           ExAws.Dynamo.get_item(@session_table, %{
+             session_string: session_string
+           })
+           |> ExAws.request() do
+      {:ok, response |> ExAws.Dynamo.decode_item(as: Session)}
+    else
+      _ -> {:error, :s3_error}
+    end
+  end
+
+  def expire_alumno_session(session_string)
+      when is_binary(session_string) do
+    ExAws.Dynamo.delete_item(@session_table, %{
+      session_string: session_string
+    })
+    |> ExAws.request()
   end
 
   @doc """

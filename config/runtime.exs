@@ -21,20 +21,20 @@ if System.get_env("PHX_SERVER") do
 end
 
 if config_env() == :prod do
-  # database_url =
-  #   System.get_env("DATABASE_URL") ||
-  #     raise """
-  #     environment variable DATABASE_URL is missing.
-  #     For example: ecto://USER:PASS@HOST/DATABASE
-  #     """
+  database_url =
+    System.get_env("DATABASE_URL") ||
+      raise """
+      environment variable DATABASE_URL is missing.
+      For example: ecto://USER:PASS@HOST/DATABASE
+      """
 
-  # maybe_ipv6 = if System.get_env("ECTO_IPV6") in ~w(true 1), do: [:inet6], else: []
+  maybe_ipv6 = if System.get_env("ECTO_IPV6") in ~w(true 1), do: [:inet6], else: []
 
-  # config :acf_project, AcfProject.Repo,
-  #   # ssl: true,
-  #   url: database_url,
-  #   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
-  #   socket_options: maybe_ipv6
+  config :acf_project, AcfProject.Repo,
+    # ssl: true,
+    url: database_url,
+    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
+    socket_options: maybe_ipv6
 
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you
@@ -95,3 +95,25 @@ if config_env() == :prod do
   #
   # Check `Plug.SSL` for all available options in `force_ssl`.
 end
+
+# Setup AWS
+aws_region =
+  System.get_env("AWS_REGION") ||
+    raise """
+    environment variable AWS_REGION is missing.
+    For example: us-west-2
+    """
+
+config :ex_aws,
+  region: aws_region,
+  access_key_id: {:system, "AWS_ACCESS_KEY_ID"},
+  security_token: {:system, "AWS_SESSION_TOKEN"},
+  secret_access_key: {:system, "AWS_SECRET_ACCESS_KEY"}
+
+config :waffle,
+  storage: Waffle.Storage.S3,
+  # or {:system, "AWS_S3_BUCKET"}
+  bucket: "uady-acf-project",
+  # or {:system, "ASSET_HOST"}
+  # asset_host: "https://uady-acf-project.s3.amazonaws.com"
+  virtual_host: true
